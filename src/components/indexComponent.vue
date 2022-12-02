@@ -95,10 +95,89 @@
         <v-btn v-on:click="sendNewData()"> Enviar Información </v-btn>
       </v-col>
     </v-row>
+    <v-row>
+      <v-col cols="9" style="margin: auto">
+        <v-text-field
+          type="number"
+          label="Pregnancies"
+          placeholder="Agrega el Campo"
+          v-model="newElement[['Pregnancies']]"
+        />
+      </v-col>
+      <v-col cols="9" style="margin: auto">
+        <v-text-field
+          type="number"
+          label="Glucose"
+          placeholder="Agrega el Campo"
+          v-model="newElement[['Glucose']]"
+        />
+      </v-col>
+      <v-col cols="9" style="margin: auto">
+        <v-text-field
+          type="number"
+          label="BloodPresure"
+          placeholder="Agrega el Campo"
+          v-model="newElement[['BloodPresure']]"
+        />
+      </v-col>
+      <v-col cols="9" style="margin: auto">
+        <v-text-field
+          type="number"
+          label="SkinThickness"
+          placeholder="Agrega el Campo"
+          v-model="newElement[['SkinThickness']]"
+        />
+      </v-col>
+      <v-col cols="9" style="margin: auto">
+        <v-text-field
+          type="number"
+          label="Insulin"
+          placeholder="Agrega el Campo"
+          v-model="newElement[['Insulin']]"
+        />
+      </v-col>
+      <v-col cols="9" style="margin: auto">
+        <v-text-field
+          type="number"
+          label="BMI"
+          placeholder="Agrega el Campo"
+          v-model="newElement[['BMI']]"
+        />
+      </v-col>
+      <v-col cols="9" style="margin: auto">
+        <v-text-field
+          type="number"
+          label="DiabetesPedigreeFunction"
+          placeholder="Agrega el Campo"
+          v-model="newElement[['DiabetesPedigreeFunction']]"
+        />
+      </v-col>
+      <v-col cols="9" style="margin: auto">
+        <v-text-field
+          type="number"
+          label="Age"
+          placeholder="Agrega el Campo"
+          v-model="newElement[['Age']]"
+        />
+      </v-col>
+      <v-col cols="9" style="margin: auto">
+        <v-text-field
+          type="number"
+          label="Outcome"
+          placeholder="Agrega el Campo"
+          v-model="newElement[['Outcome']]"
+        />
+      </v-col>
+      <v-col cols="12" style="text-align: center">
+        <v-btn v-on:click="newData()"> Enviar Información </v-btn>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "indexComponent",
 
@@ -106,73 +185,39 @@ export default {
     measureValue: "",
     measure: false,
     toSend: {},
+    newElement: {},
   }),
 
   methods: {
     entrenarModelo() {
-      fetch("http://54.160.150.74:8080/api/model-database/model", {
-        method: "POST",
-        body: JSON.stringify(this.toSend),
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-          "Access-Control-Max-Age": 600,
-        },
-      })
+      axios
+        .post("http://54.160.150.74:8080/api/model-database/model", {})
         .then((response) => {
-          response.json();
-        })
-        .then((json) => {
-          console.log(json);
-        })
-        .catch((error) => {
-          console.log(error);
+          console.log(response.data);
         });
     },
 
     sendNewData() {
-      fetch("http://54.160.150.74:8080/api/model-database/model-prediction", {
-        method: "POST",
-        body: JSON.stringify(this.toSend),
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-          "Access-Control-Max-Age": 600,
-        },
-      })
+      axios
+        .post(
+          "http://54.160.150.74:8080/api/model-database/model-prediction",
+          this.toSend
+        )
         .then((response) => {
-          response.json();
-        })
-        .then((json) => {
-          console.log(json);
-        })
-        .catch((error) => {
-          console.log(error);
+          console.log(response.data);
+        });
+    },
+
+    newData() {
+      axios
+        .post(
+          "http://54.160.150.74:8080/api/model-database/registro",
+          this.newElement
+        )
+        .then((response) => {
+          console.log(response.data);
         });
     },
   },
 };
 </script>
-<style>
-.title {
-  text-align: center;
-  font-size: 40pt;
-  font-weight: bold;
-  margin: 35pt 0;
-  z-index: 2;
-  position: relative;
-}
-
-.subtitle {
-  text-align: justify;
-  font-weight: bold;
-  font-size: 24px;
-  margin-top: 15pt;
-}
-
-.subtitleDelimiter {
-  width: 65px;
-  height: 3pt;
-  background: #3bb3c1;
-  margin-top: -5px;
-  margin-bottom: 15pt;
-}
-</style>
