@@ -1,15 +1,15 @@
 <template>
-  <hello-world />
+  <index-component />
 </template>
 
 <script>
-import HelloWorld from "../components/HelloWorld";
+import indexComponent from "../components/indexComponent.vue";
 
 export default {
   name: "HomeView",
 
   components: {
-    HelloWorld,
+    indexComponent,
   },
 };
 </script>
